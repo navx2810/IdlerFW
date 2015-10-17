@@ -1,0 +1,36 @@
+navitem-left-border-color = #71D161  // #31E868
+navitem-left-border-color-selected = navitem-left-border-color - #211
+navbar-border-color = #ddd
+
+nav
+	max-width 400px
+	margin 0px
+
+.Navbar .selected
+	font-weight bold
+	border-left 10px solid navitem-left-border-color-selected
+	
+	background navitem-left-border-color-selected
+	color #fff
+
+.Navbar ul
+	list-style none
+	background #eeeeee
+	margin 0px
+
+.Navbar li
+	border-left 10px solid navitem-left-border-color
+	color #999
+	background #fff
+	margin-bottom 5px
+	padding 5px 8px
+	
+.Navbar .header
+	font-size 1.5em
+	padding-left .25em
+	border-bottom 2px solid #bbb
+	margin 0em .5em 1em .5em
+
+.Navbar
+	border-right 2px solid navbar-border-color
+	border-bottom 2px solid navbar-border-color
