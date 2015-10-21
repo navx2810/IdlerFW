@@ -1,4 +1,6 @@
 import m from 'mithril'
+import {Model} from '.'
+
 let {prop} = m
 
 let Listing = {
@@ -7,6 +9,7 @@ let Listing = {
 		this.editing = prop(false)
 
 		this.onClick = (e) => this.editing(true)
+
 	},
 
 	view(ctrl, props, ...children) {
@@ -78,6 +81,37 @@ let AttributeListing = {
 	}
 }
 
+let CharacterCreator = {
+	controller(props) {
+		this.isAdding = prop(false)
+		this.nameInput = ""
+
+		this.changeAdding = (e) => this.isAdding(true)
+		this.finishAdding = (e) => this.isAdding(false)
+		this.onChange = (e) => this.nameInput = e.target.value
+		this.saveChar = (e) => {
+			let char = Model.newCharacter()
+			console.log(char.ID())
+			this.finishAdding()
+		}
+	},
+
+	view(ctrl, props, ...children) {
+		let row
+
+		if(!ctrl.isAdding())
+			row = <a className="btn-green" onclick={ctrl.changeAdding} title="Add a new listing"><i className="fa fa-plus-square"></i></a>
+		else
+			row = <div className="CharacterCreator">
+				<input type="text" placeholder="Character Name or ID" onchange={ctrl.onChange}/>
+				<a className="btn-save" onclick={ctrl.saveChar} >save</a>
+				<a className="btn-cancel" onclick={ctrl.finishAdding}>cancel</a>
+			</div>
+
+		return row
+	}
+}
+
 class CharacterListings {
 	controller(props) {
 		this.list = m.prop([{name: prop('matt'), attributes: {}}, {name: prop('mike'), attributes: {}}, {name: prop('nikita'), attributes: {}}]);
@@ -87,9 +121,11 @@ class CharacterListings {
 		let rows = ctrl.list().map( (val, key) => <Listing key={key} character={val} /> )
 
 		return <div className="CharacterListings">
-		<div className="row ButtonBar">
-		<h2 className="one column ListingsHeader">Characters</h2>
-		<button className="u-pull-right">Add</button>
+		<div className="row header">
+		<div className="row">
+			<h2 className="ListingsHeader">Characters</h2>
+		</div>
+		<div className="row"><CharacterCreator /></div>
 		</div>
 		<ul>{rows}</ul>
 		</div>
