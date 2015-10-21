@@ -1,5 +1,7 @@
 ul-bg-color = #eee
 editing-border-color = #9FEDAF // #71D161
+navbar-border-color = #ddd
+border-bottom-listings = 2px solid navbar-border-color
 
 .CharacterListings
 	border 2px solid #eee
@@ -8,20 +10,24 @@ editing-border-color = #9FEDAF // #71D161
 	list-style none
 	background ul-bg-color
 	margin 0px
+	border-bottom border-bottom-listings
 
 .Listing
 	padding-left 5px
 	background #fff
 	font-size 1.25em
 	font-size 2em
+	border-bottom border-bottom-listings
 
 .Editing
 	background #fff
 	padding .5em 1em
 	border-left 10px solid editing-border-color
+	border-bottom 1px solid navbar-border-color
 	
 .ButtonBar
 	background ul-bg-color
+	border-bottom 2px solid navbar-border-color - #111
 
 .ButtonBar > button
 	background #1EBE39
@@ -30,3 +36,9 @@ editing-border-color = #9FEDAF // #71D161
 .ButtonBar > button:hover
 	background #1EBE39 + #222
 	color #fff + #222
+
+.ListingsHeader
+	color #777
+	
+.info
+	color #888
