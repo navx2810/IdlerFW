@@ -4,7 +4,34 @@ navbar-border-color = #ddd
 border-bottom-listings = 2px solid navbar-border-color
 
 .CharacterListings
+	a
+		cursor pointer
+		
 	border 2px solid #eee
+	
+	.header
+		background #eee
+		border-bottom 2px solid #ccc
+	
+	.btn-green
+		color #71d161
+		font-size 2em
+		cursor pointer
+		padding 5px
+		:hover
+			color #71d161 + #111
+	
+	.CharacterCreator
+		*
+			margin 10px
+		.btn-save
+			color #1EAEDB
+			font-weight bold
+		.btn-cancel
+			font-weight bold
+			color #E13A3F
+			:hover
+				color white
 
 .CharacterListings ul
 	list-style none
