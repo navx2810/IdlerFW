@@ -12,7 +12,7 @@ let Listing = {
 	view(ctrl, props, ...children) {
 		if (ctrl.editing())
 			return <Editing character={ctrl.character} editingValue={ctrl.editing} />
-		return <li className="Listing" ondblclick={ctrl.onClick}>{ctrl.character.name()}</li>
+		return <li className="Listing" onclick={ctrl.onClick}>{ctrl.character.name()}</li>
 	}
 }
 
@@ -49,28 +49,48 @@ let Editing = {
 		let NameOrInput = (ctrl.isEditingName()) ? <input type="text" placeholder={name()} onblur={ctrl.onBlur}/> : <em ondblclick={ctrl.onDblClickName}>{name()}</em>
 
 		let IDRow = <div className="row">ID: {NameOrInput}</div>
-		let AttributesRow = <div className="row">Attributes</div>
+		let AttributesRow = <div className="row"><i className="fa fa-caret-right"/> Attributes </div>
 		let ButtonRow = <div className="row">
-		<button className="u-pull-right" onclick={ctrl.hide}>X</button>
-		<button className="u-pull-right" onclick={ctrl.toCurves}>Goto Curves</button>
+			<button className="u-pull-right" onclick={ctrl.hide}>X</button>
+			<button className="u-pull-right" onclick={ctrl.toCurves}>Goto Curves</button>
 		</div>
 
-		let rows = [IDRow, AttributesRow, ButtonRow]
+		let rows = [IDRow, AttributesRow,<div className="row info">content that is <em>italized</em> can be edited by double-clicking it</div>, ButtonRow]
 
 		return <div className="Editing">{rows}</div>
 	}
 }
 
+let AttributeListing = {
+	controller(props) {
+		this.attribute = props.attribute
+		this.isEditing = prop(false)
+		// this.attrDataType = props.attributeDataType
+
+		this.onDblClick = (e) => this.isEditing(true)
+		this.onBlur = (e) => {
+			this.isEditing(false)
+		}
+	},
+
+	view(ctrl, props, ...children) {
+		
+	}
+}
+
 class CharacterListings {
 	controller(props) {
-		this.list = m.prop([{name: prop('matt')}, {name: prop('mike')}, {name: prop('nikita')}]);
+		this.list = m.prop([{name: prop('matt'), attributes: {}}, {name: prop('mike'), attributes: {}}, {name: prop('nikita'), attributes: {}}]);
 	}
 
 	view(ctrl, props, ...children) {
 		let rows = ctrl.list().map( (val, key) => <Listing key={key} character={val} /> )
 
 		return <div className="CharacterListings">
-		<div className="row ButtonBar"><button className="u-pull-right">Add</button></div>
+		<div className="row ButtonBar">
+		<h2 className="one column ListingsHeader">Characters</h2>
+		<button className="u-pull-right">Add</button>
+		</div>
 		<ul>{rows}</ul>
 		</div>
 	}
