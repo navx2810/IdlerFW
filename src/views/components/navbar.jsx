@@ -8,7 +8,7 @@ let NavItem = {
 	},
 
 	view(ctrl, props, ...children) {
-		let className = (m.route() == props.route) ? "selected NavItem" : "NavItem"
+		let className = (m.route().includes(props.route, 0)) ? "selected NavItem" : "NavItem"
 		return <li className={className} onclick={ctrl.onClick}>{children}</li>
 	}
 }

@@ -1,6 +1,8 @@
 import m from 'mithril'
 let {prop} = m
 
+var uuid = require('node-uuid')
+
 // export NavbarVM = {
 // 	selectedTab: prop(0)
 // }
@@ -12,7 +14,7 @@ export let Model = {
 	newCharacter( id = null, keys = prop([]), values = prop([]), kvtypes = prop([]), progression = defaultProgression ) {
 		
 		if(!id)
-			id = prop(this.Characters().length++)
+			id = prop(uuid.v1())
 
 		let char = {}
 
@@ -23,11 +25,11 @@ export let Model = {
 		char.Progression = progression 	// Check to see if this is a function?
 
 		return char
+		
 	}
 }
 
 let defaultProgression = {
-	MaxLevel	: prop(0),
-	Damage		: prop([]),
-	Cost		: prop([])
+	Damage		: prop([0]),
+	Cost		: prop([0])
 }

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import {Model} from '.'
+import {Model, Attributes} from '.'
 
 let {prop} = m
 
@@ -15,7 +15,7 @@ let Listing = {
 	view(ctrl, props, ...children) {
 		if (ctrl.editing())
 			return <Editing character={ctrl.character} editingValue={ctrl.editing} />
-		return <li className="Listing" onclick={ctrl.onClick}>{ctrl.character.name()}</li>
+		return <li className="Listing" onclick={ctrl.onClick}>{ctrl.character.ID()}</li>
 	}
 }
 
@@ -36,10 +36,9 @@ let Editing = {
 			value = value.trim()
 
 			let valueIsNotBlank = (value !== "" && value)
-			console.log(`is the value blank?: ${valueIsNotBlank}, value entered: ${e.target.value}`)
 
 			if(value !== "" && value) {
-				this.character.name(value)
+				this.character.ID(value)
 				this.isEditingName(false)
 
 			}
@@ -47,37 +46,21 @@ let Editing = {
 	},
 
 	view(ctrl, props, ...children) {
-		let {name} = ctrl.character
+		let {ID} = ctrl.character
 
-		let NameOrInput = (ctrl.isEditingName()) ? <input type="text" placeholder={name()} onblur={ctrl.onBlur}/> : <em ondblclick={ctrl.onDblClickName}>{name()}</em>
+		let NameOrInput = (ctrl.isEditingName()) ? <input type="text" placeholder={ID()} onblur={ctrl.onBlur}/> : <em ondblclick={ctrl.onDblClickName}>{ID()}</em>
+		let InputButtons = (ctrl.isEditingName()) ? <span><a>save</a> <a>cancel</a></span> : null
 
-		let IDRow = <div className="row">ID: {NameOrInput}</div>
-		let AttributesRow = <div className="row"><i className="fa fa-caret-right"/> Attributes </div>
+		let IDRow = <div className="row">ID: {NameOrInput} {InputButtons}</div>
+		let AttributesRow = <Attributes attributes={{ Keys: ctrl.character.Keys, Values: ctrl.character.Values, KVTypes: ctrl.character.KVTypes }}/>
 		let ButtonRow = <div className="row">
 			<button className="u-pull-right" onclick={ctrl.hide}>X</button>
 			<button className="u-pull-right" onclick={ctrl.toCurves}>Goto Curves</button>
 		</div>
 
-		let rows = [IDRow, AttributesRow,<div className="row info">content that is <em>italized</em> can be edited by double-clicking it</div>, ButtonRow]
+		let rows = [IDRow, AttributesRow,<div className="row info">content that is <em>italized</em> can be edited by clicking it</div>, ButtonRow]
 
 		return <div className="Editing">{rows}</div>
-	}
-}
-
-let AttributeListing = {
-	controller(props) {
-		this.attribute = props.attribute
-		this.isEditing = prop(false)
-		// this.attrDataType = props.attributeDataType
-
-		this.onDblClick = (e) => this.isEditing(true)
-		this.onBlur = (e) => {
-			this.isEditing(false)
-		}
-	},
-
-	view(ctrl, props, ...children) {
-		
 	}
 }
 
@@ -91,9 +74,16 @@ let CharacterCreator = {
 		this.onChange = (e) => this.nameInput = e.target.value
 		this.saveChar = (e) => {
 			let char = Model.newCharacter()
-			console.log(char.ID())
+			let name = this.nameInput.trim()
+
+			if(name !== "" && name)
+				char.ID(this.nameInput)
+
+			Model.Characters().push(char)
 			this.finishAdding()
 		}
+
+		this.checkSubmit = (e) => { if(e.keyCode === 13) this.saveChar() }
 	},
 
 	view(ctrl, props, ...children) {
@@ -103,7 +93,7 @@ let CharacterCreator = {
 			row = <a className="btn-green" onclick={ctrl.changeAdding} title="Add a new listing"><i className="fa fa-plus-square"></i></a>
 		else
 			row = <div className="CharacterCreator">
-				<input type="text" placeholder="Character Name or ID" onchange={ctrl.onChange}/>
+				<input type="text" placeholder="Character Name or ID" onchange={ctrl.onChange} onkeyup={ctrl.checkSubmit}/>
 				<a className="btn-save" onclick={ctrl.saveChar} >save</a>
 				<a className="btn-cancel" onclick={ctrl.finishAdding}>cancel</a>
 			</div>
@@ -114,7 +104,7 @@ let CharacterCreator = {
 
 class CharacterListings {
 	controller(props) {
-		this.list = m.prop([{name: prop('matt'), attributes: {}}, {name: prop('mike'), attributes: {}}, {name: prop('nikita'), attributes: {}}]);
+		this.list = Model.Characters
 	}
 
 	view(ctrl, props, ...children) {
