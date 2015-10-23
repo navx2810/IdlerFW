@@ -1,6 +1,8 @@
 app = require 'app'
 BrowserWindow = require 'browser-window'
 Menu = require 'menu'
+dialog = require 'dialog'
+ipc = require 'ipc'
 
 mainWindow = null
 
@@ -22,4 +24,10 @@ app.on 'ready', ->
 
 	mainWindow.on 'closed', ->
 		mainWindow = null
+
+	ipc.on 'show:dialog', (event, arg) =>
+		fName = dialog.showOpenDialog
+			properties: [ 'openDirectory' ]
+
+		event.sender.send 'dialog:reply', fName[0]
 
