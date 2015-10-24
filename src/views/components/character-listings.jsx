@@ -43,6 +43,13 @@ let Editing = {
 
 			}
 		}
+
+		this.delete = (e) => {
+			let {character} = this
+			let position = Model.Characters().indexOf(character)
+
+			Model.Characters().splice(position, 1)
+		}
 	},
 
 	view(ctrl, props, ...children) {
@@ -56,6 +63,7 @@ let Editing = {
 		let ButtonRow = <div className="row">
 			<button className="u-pull-right" onclick={ctrl.hide}>X</button>
 			<button className="u-pull-right" onclick={ctrl.toCurves}>Goto Curves</button>
+			<button className="u-pull-right" onclick={ctrl.delete}>Delete</button>
 		</div>
 
 		let rows = [IDRow, AttributesRow,<div className="row info">content that is <em>italized</em> can be edited by clicking it</div>, ButtonRow]
