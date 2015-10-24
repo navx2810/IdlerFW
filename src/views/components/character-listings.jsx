@@ -29,7 +29,7 @@ let Editing = {
 		this.onDblClickName = (e) => this.isEditingName(true)
 
 		this.hide = (e) => this.editingValue(false)
-		this.toCurves = (e) => m.route('curves?id=0')
+		this.toCurves = (e) => m.route(`curves?id=${this.character.ID()}`)
 		this.onBlur = (e) => {
 			let {value} = e.target
 
@@ -70,7 +70,10 @@ let CharacterCreator = {
 		this.nameInput = ""
 
 		this.changeAdding = (e) => this.isAdding(true)
-		this.finishAdding = (e) => this.isAdding(false)
+		this.finishAdding = (e) => {
+			this.isAdding(false)
+			this.nameInput = ""
+		}
 		this.onChange = (e) => this.nameInput = e.target.value
 		this.saveChar = (e) => {
 			let char = Model.newCharacter()

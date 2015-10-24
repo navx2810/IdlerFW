@@ -5,7 +5,7 @@ import {Model} from '.'
 let CharacterChooser = {
 	view(ctrl, props, ...children) {
 		let {data} = props
-		let rows = data().map( (v, k) => <option value={k}>{v.ID()}</option> )
+		let rows = data().map( (v, k) => <option value={v.ID()}>{v.ID()}</option> )
 
 		rows.unshift(<option disabled selected>select a character</option>)
 
@@ -116,7 +116,7 @@ class Curves {
 	controller(props) {
 		this.id = route.param("id")
 		this.characters = Model.Characters
-		this.character = (this.id) ? Model.Characters()[this.id] : null
+		this.character = (this.id) ? Model.Characters().find( character => character.ID() === this.id ) : null
 
 		this.onChange = (e) => route(`curves?id=${e.target.value}`)
 	}
