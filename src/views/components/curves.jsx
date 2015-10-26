@@ -25,14 +25,18 @@ let CurvesTable = {
 		this.changeDamage = (e) => {
 			let index = e.target.attributes.index.value
 			let {value} = e.target
-			this.character.Progression.Damage()[index] = value
+
+			if(!isNaN(value) && value.trim() !== "" && value)
+				this.character.Progression.Damage()[index] = value
 			e.target.value = ""
 		}
 
 		this.changeCost = (e) => {
 			let index = e.target.attributes.index.value
 			let {value} = e.target
-			this.character.Progression.Cost()[index] = value
+
+			if(!isNaN(value) && value.trim() !== "" && value)
+				this.character.Progression.Cost()[index] = value
 			e.target.value = ""
 		}
 
