@@ -56,6 +56,12 @@ let CurvesTable = {
 		this.deleteColm = (e) => {
 			let {Damage, Cost} = this.character.Progression
 			let index = e.target.attributes.index.value
+
+			if(index == 0)
+				return
+			
+			Damage().splice(index, 1)
+			Cost().splice(index, 1)
 		}
 
 		this.toggleCostPercentage = (e) => this.costPercentage( e.target.checked )
